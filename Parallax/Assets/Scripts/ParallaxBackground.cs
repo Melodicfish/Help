@@ -7,12 +7,14 @@ public class ParallaxBackground : MonoBehaviour
 {
     public ParallaxCamera parallaxCamera;
     List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
-    
 
-    void Start()
+
+    private void Start()  
     {
         CameraCheck();
     }
+
+  
 
     public void CameraCheck()
     {

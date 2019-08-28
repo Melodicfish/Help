@@ -12,17 +12,35 @@ public class FrameSwitch : MonoBehaviour
     private bool frame1Active;
     private ParallaxCamera parallax;
     public Image screenFade;
-  
+    public Parallax frame1Parallax;
+    public Parallax frame2Parallax;
     public ParallaxCamera parallaxCamera;
 
+    private void Awake()
+    {
+        frame1Parallax = frame1.GetComponent<Parallax>();
+        frame2Parallax = frame2.GetComponent<Parallax>();
 
+        frame1Parallax.enabled = false;
+        frame2Parallax.enabled = false;
+    }
 
 
     private void Start()
     {
         
+
         screenFade.canvasRenderer.SetAlpha(0.0f);
-       
+        if (frame1.activeInHierarchy)
+        {
+            frame1Parallax.enabled = true;
+        }
+
+        if (frame2.activeInHierarchy)
+        {
+            frame2Parallax.enabled = true;
+        }
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -42,16 +60,18 @@ public class FrameSwitch : MonoBehaviour
             
             frame1.SetActive(true);
             frame2.SetActive(false);
-           
-          
+            frame1Parallax.enabled = true;
+            frame2Parallax.enabled = false;
+
         }
         if (transform.position.x < player.transform.position.x)
         {
            
             frame1.SetActive(false);
             frame2.SetActive(true);
-           
-
+            
+            frame1Parallax.enabled = false;
+            StartCoroutine(setActive2());
         }
         fadeOut();
     }
@@ -72,10 +92,16 @@ public class FrameSwitch : MonoBehaviour
     IEnumerator setActive()
     {
         yield return new WaitForSeconds(.2f);
-        frame1.SetActive(true);
-        frame2.SetActive(true);
+       // frame1.SetActive(true);
+        //frame2.SetActive(true);
 
     }
-    
-    
+    IEnumerator setActive2()
+    {
+        yield return new WaitForSeconds(2f);
+        // frame1.SetActive(true);
+        //frame2.SetActive(true);
+        frame2Parallax.enabled = true;
+    }
+
 }
