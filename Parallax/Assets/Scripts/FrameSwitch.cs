@@ -15,6 +15,9 @@ public class FrameSwitch : MonoBehaviour
     public Parallax frame1Parallax;
     public Parallax frame2Parallax;
     public ParallaxCamera parallaxCamera;
+    public Collider2D barrier;
+    public Transform posA;
+    public Transform posB;
 
     private void Awake()
     {
@@ -42,12 +45,16 @@ public class FrameSwitch : MonoBehaviour
         }
 
     }
+
+  
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
-        fadeIn();
-        StartCoroutine(setActive());
-        
+
+        // fadeIn();
+        //StartCoroutine(setActive());
+        frame1Parallax.enabled = false;
+        frame2Parallax.enabled = false;
     }
 
     
@@ -55,6 +62,18 @@ public class FrameSwitch : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (Vector2.Distance(posA.transform.position, collision.transform.position) < Vector2.Distance(posB.transform.position, collision.transform.position))
+            {
+                frame1Parallax.enabled = true;  
+            }
+            if (Vector2.Distance(posA.transform.position, collision.transform.position) > Vector2.Distance(posB.transform.position, collision.transform.position))
+            {
+                frame2Parallax.enabled = true;
+            }
+        }
+        /*
         if(transform.position.x>= player.transform.position.x)
         {
             
@@ -73,9 +92,12 @@ public class FrameSwitch : MonoBehaviour
             frame1Parallax.enabled = false;
             StartCoroutine(setActive2());
         }
-        fadeOut();
+        fadeOut();*/
     }
 
+
+
+    
     void fadeIn()
     {
         screenFade.canvasRenderer.SetAlpha(0.0f);
